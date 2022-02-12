@@ -1,0 +1,95 @@
+---
+title: "Superbowl Predictions"
+output: html_notebook
+---
+# By Diomides Suero 
+# Loading library and packages
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+# Uploading data set 
+
+```{r}
+# reading file as csv
+SB<-read_csv("spreadspoke_scores.csv")
+SB
+```
+# filtering data for 2021-2022 regular season
+```{r}
+# Filtering year 2019-present
+year<-filter(SB, schedule_season>=2021)
+year
+```
+
+# Filtering data from 2021-present just bengals and rams
+```{r}
+# rams at home
+homeRams<-filter(year,team_home== "Los Angeles Rams")
+homeRams
+
+# bengals away
+awayBengals<-filter(year, team_away=="Cincinnati Bengals")
+awayBengals
+```
+# Prediction 1: will Rams win because of home advantage? 
+```{r}
+
+#histogram
+ggplot(data = homeRams) + geom_histogram(mapping = aes(x = score_home, fill=team_away), bins = 15) + 
+  labs(title = "Rams Home Games Advantage",
+x = "Score", y = "Count")
+ggplot(data = homeRams) + geom_histogram(mapping = aes(x = score_away, fill=team_away), bins = 15) + 
+  labs(title = "Rams Home Games vs Opposite Team Scores",
+x = "Score", y = "Count")
+
+
+```
+
+# average scores, Rams when at home
+```{r}
+summary(homeRams)
+```
+# Prediction 2: will Bengals lose because Rams have home advantage? 
+```{r}
+
+#histogram
+ggplot(data = awayBengals) + geom_histogram(mapping = aes(x = score_home, fill=team_home), bins = 15) + 
+  labs(title = "Opposite Team Home Games Scores",
+x = "Score", y = "Count")
+ggplot(data = awayBengals) + geom_histogram(mapping = aes(x = score_away, fill=team_home), bins = 15) + 
+  labs(title = "Bengals Away Scores",
+x = "Score", y = "Count")
+
+
+```
+# average scores, Bengals when away
+```{r}
+summary(awayBengals)
+```
+
+# Filtering data from 2021-present just bengals and rams against same team
+```{r}
+# rams
+rams<-filter(year,team_home== "Los Angeles Rams")
+rams
+
+# bengals
+bengals<-filter(year, team_away=="Cincinnati Bengals")
+bengals
+```
+# Visualization 3: Common Teams they played against Rams(home), Bengals (Away)
+```{r}
+
+#histogram
+
+ggplot(data = rams) + geom_histogram(mapping = aes(x = score_home, fill=team_away), bins = 15) + 
+  labs(title = "Rams Home Games Advantage",
+x = "Score", y = "Count")
+
+ggplot(data = bengals) + geom_histogram(mapping = aes(x = score_home, fill=team_home), bins = 15) + 
+  labs(title = "Bengals Away Game scores",
+x = "Score", y = "Count")
+
+```
+
